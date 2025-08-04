@@ -1,15 +1,33 @@
 import makeStyles from "@mui/styles/makeStyles";
-import { styled } from "@mui/material/styles";
+import { createTheme, styled } from "@mui/material/styles";
 import { Typography } from "@mui/material";
+import { customTheme } from "../Utility/theme";
 
-const CommonStyles = makeStyles((theme) => ({
+const theme = customTheme;
+const CommonStyles = makeStyles(() => ({
   //Common Page Styles
   cms_pageContainer: {
-    width: "auto",
+    width: "96vw",
     borderRadius: "24px 0px 0px 0px",
     marginLeft: "4rem",
     paddingTop: "1rem",
     marginBottom: "auto",
+  },
+  cms_cardsStyle: {
+    border: `1px solid ${theme.palette.grey[300]}`,
+    padding: "1rem",
+    marginTop: "1rem",
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: `0px 0px 5px 1px ${theme.palette.grey[50]}`,
+    cursor: "pointer",
+    borderRadius: "1rem",
+    
+  },
+  cms_cardsContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    margin: "1rem",
+    gap: "0.5% !important",
   },
 }));
 

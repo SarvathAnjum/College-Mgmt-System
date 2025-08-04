@@ -1,2 +1,3 @@
-export { getAllStudents,  updateStudent, deleteStudent, createNewStudent} from "./StudentsAction";
-export {getLoggedInUserDetails} from "./AppAction";
+export { getAllStudents,  updateStudent, deleteStudent, createNewStudent} from "./studentsAction";
+export {getLoggedInUserDetails} from "./appAction";
+export {getAllDepts, getCoursesByDepartment} from "./departmentsAction"

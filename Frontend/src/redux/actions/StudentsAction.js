@@ -5,8 +5,6 @@ import {  setStudents } from "../reducers/studentsReducer";
 
 const DESTINATION = destinations.DESTINATION;
 
-
-
 export const getAllStudents = () => {
   const sUrl = DESTINATION + API.getAllStudents;
   return (dispatch) => {

@@ -8,6 +8,7 @@ import Students from "./Students/Students";
 import Faculty from "./Faculty/Faculty";
 import Departments from "./Departments/Departments";
 import Courses from "./Courses/Courses";
+import DeptInfoPage from "./Departments/DeptInfoPage";
 
 //React.memo - Render "RoutesModule" component when the props changes
 const RoutesModule = React.memo(function RoutesModule() {
@@ -19,6 +20,7 @@ const RoutesModule = React.memo(function RoutesModule() {
         <Route exact path="/Faculty" element={<Faculty />} />
         <Route exact path="/Departments" element={<Departments />} />
         <Route exact path="/Courses" element={<Courses />} />
+        <Route exact path="/Departments/:deptId" element={<DeptInfoPage />} />
       </Routes>
     </>
   );
