@@ -12,5 +12,9 @@ const userSchema = new Schema({
     enum: [1, 2], // restricts to allowed role values
     default: 2, // default to 'User' role
   },
+  password: {
+    type: String,
+    required: true,
+  },
 });
 module.exports = mongoose.model("Students-Users", userSchema);

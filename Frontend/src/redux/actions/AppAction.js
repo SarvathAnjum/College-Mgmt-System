@@ -13,6 +13,7 @@ export const getLoggedInUserDetails = () => {
       "post",
       {
         username: "Sarvath",
+        password: "Sarvath@123"
       },
       function (response) {
         let resp = response.data;
