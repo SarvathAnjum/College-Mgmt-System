@@ -31,7 +31,7 @@ console.log(pathname?.includes("Departments"))
     roleBasedNavItems.push(navItems[2]);
     roleBasedNavItems.push(navItems[3]);
   } else {
-    roleBasedNavItems.push(navItems[0]);
+    // roleBasedNavItems.push(navItems[0]);
   }
 
   return (

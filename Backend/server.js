@@ -1,9 +1,13 @@
 require("dotenv").config(); //dotenv is a Node.js package that loads environment variables from a .env file into process.env
+require("./config/passport");
+
 const express = require("express");
 const app = express();
 
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const session = require("express-session"); //google authentication
+const passport = require("passport"); //google authentication
 const corsOptions = require("./config/corsOptions");
 
 const mongoose = require("mongoose");
@@ -20,6 +24,22 @@ app.use(cors(corsOptions)); //allows frontend apps to use the backend services
 app.use(express.urlencoded({ extended: false })); //parses URL-encoded form data and extended:false indicates that it uses simpler querysting library
 app.use(express.json()); //used for parsing the json request bodies
 app.use(cookieParser()); //middleware for cookies
+
+//this is used along with passport.js for the purpose of google authentication
+app.use(
+  session({
+    secret: process.env.COOKIE_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use("/googleAuth", require("./routes/googleAuth"));
 
 app.use("/students-refreshToken", require("./routes/students-refreshToken"));
 app.use("/students-auth", require("./routes/students-auth")); //generated the access token and applies to the routes called below this line

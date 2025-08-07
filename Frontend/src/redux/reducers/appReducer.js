@@ -9,7 +9,7 @@ const appReducer = createSlice({
       {
         icon: HomeIcon,
         activeIcon: ActiveHomeIcon,
-        item: "Home",
+        item: "App Users",
         path: "/",
       },
       {

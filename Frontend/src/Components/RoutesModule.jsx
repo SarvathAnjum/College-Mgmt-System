@@ -9,13 +9,31 @@ import Faculty from "./Faculty/Faculty";
 import Departments from "./Departments/Departments";
 import Courses from "./Courses/Courses";
 import DeptInfoPage from "./Departments/DeptInfoPage";
+import { store } from "../redux/store";
+import { useSelector } from "react-redux";
+import { appSelector } from "../redux/MemoizedSelectors";
+import AppUsers from "./Authentication-Authorization/AppUsers";
+import Login from "./Authentication-Authorization/Login";
 
 //React.memo - Render "RoutesModule" component when the props changes
 const RoutesModule = React.memo(function RoutesModule() {
+  const { loggedInUserData } = useSelector(appSelector);
+
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<Students />} />
+        <Route
+          exact
+          path="/"
+          element={
+            loggedInUserData?.accessToken == "" ||
+            loggedInUserData?.length == 0 ? (
+              <Login />
+            ) : (
+              <AppUsers />
+            )
+          }
+        />
         <Route exact path="/Students" element={<Students />} />
         <Route exact path="/Faculty" element={<Faculty />} />
         <Route exact path="/Departments" element={<Departments />} />

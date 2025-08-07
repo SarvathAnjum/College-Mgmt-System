@@ -34,6 +34,24 @@ const handleLogin = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
     );
+
+    const refreshToken = jwt.sign(
+      {
+        username: foundUser.username,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+    );
+    foundUser.refreshToken = refreshToken;
+    await foundUser.save();
+    
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     const UserInfo = {
       ...foundUser._doc,
       rolename: roles == 1 ? "Admin" : roles == 2 ? "User" : "",
@@ -73,4 +91,31 @@ const handleNewUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-module.exports = { handleLogin, handleNewUser,getAllUsers };
+
+const handleLogout = async (req, res) => {
+  //On Client, also delete the access token
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.sendStatus(204); //No Content
+  const refreshToken = cookies.jwt;
+
+  //Is refreshToken in DB?
+  const foundUser = await User.findOne({ refreshToken }).exec();
+  if (!foundUser) {
+    res.clearCookie("jwt", { httpOnly: true });
+    return res.sendStatus(403);
+  }
+
+  //Delete the refresh token in db
+  foundUser.refreshToken = "";
+  await foundUser.save();
+
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: "None",
+    // secure: true,
+    maxAge: 24 * 60 * 60 * 1000,
+  }); // secure : true ---> only serves on https
+  res.sendStatus(204);
+};
+module.exports = { handleLogin, handleNewUser, getAllUsers, handleLogout };
