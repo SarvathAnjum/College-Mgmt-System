@@ -48,3 +48,21 @@ export const getGoggleAuthDetails = () => {
     );
   };
 };
+
+export const handleLogout = () => {
+  const sUrl = DESTINATION + API.logout;
+  return (dispatch) => {
+    doAjax(
+      sUrl,
+      "get",
+      {},
+      function (response) {
+        // window.location.reload();
+        dispatch(setLoggedInUserData([]));
+      },
+      () => {
+        console.log("Error");
+      }
+    );
+  };
+};

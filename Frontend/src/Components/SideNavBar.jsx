@@ -19,10 +19,8 @@ export default function SideNavBar() {
   const role = loggedInUserData?.UserInfo?.rolename;
   const currentLocation = useLocation();
   let pathname = currentLocation?.pathname;
-console.log(pathname?.includes("Departments"))
-  if(pathname?.includes("Departments"))
-  {
-    pathname = "/Departments"
+  if (pathname?.includes("Departments")) {
+    pathname = "/Departments";
   }
   let roleBasedNavItems = []; // Initialize an empty array
   if (role == "Admin") {
@@ -30,7 +28,13 @@ console.log(pathname?.includes("Departments"))
     roleBasedNavItems.push(navItems[1]);
     roleBasedNavItems.push(navItems[2]);
     roleBasedNavItems.push(navItems[3]);
-  } else {
+  } 
+   else if (role == "User") {
+    roleBasedNavItems.push(navItems[1]);
+    roleBasedNavItems.push(navItems[2]);
+    roleBasedNavItems.push(navItems[3]);
+  }
+  else {
     // roleBasedNavItems.push(navItems[0]);
   }
 

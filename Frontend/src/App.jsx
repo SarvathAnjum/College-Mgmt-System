@@ -10,6 +10,7 @@ import { appSelector } from "./redux/MemoizedSelectors";
 import Login from "./Components/Authentication-Authorization/Login";
 import axios from "axios";
 import { getGoggleAuthDetails } from "./redux/actions/appAction";
+import { setLoggedInUserData } from "./redux/reducers/appReducer";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,11 +23,9 @@ function App() {
       .get("http://localhost:3500/googleAuth/user", {
         withCredentials: true,
       })
-      .then((res) => console.log(res.data))
+      .then((res) => dispatch(setLoggedInUserData(res.data)))
       .catch((err) => console.log(err));
   }, []);
-
-  console.log(loggedInUserData?.accessToken);
   return (
     <Box>
       {loggedInUserData?.accessToken == "" ? (

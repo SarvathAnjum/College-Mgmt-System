@@ -17,22 +17,72 @@ import Button from "@mui/material/Button";
 import { appSelector } from "../redux/MemoizedSelectors";
 import { AppHeaderContainer } from "../classes/AppHeaderStyles";
 import { useTheme } from "@emotion/react";
+import { handleLogout } from "../redux/actions";
+import { NavLink } from "react-router-dom";
 
 function AppHeader() {
   const { loggedInUserData } = useSelector(appSelector);
   const temp = useTheme();
-  console.log(temp);
+  const dispatch = useDispatch();
+  // console.log(temp);
 
+  const [isUserDetailsPopupOpen, setIsUserDetailsPopupOpen] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const userInfo = loggedInUserData?.UserInfo;
+
+  const onOpenUserPopup = useCallback((event) => {
+    setIsUserDetailsPopupOpen(true);
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const onCloseUserPopup = useCallback(() => {
+    setIsUserDetailsPopupOpen(false);
+    setAnchorEl(null);
+  }, []);
+
+  const handleSignOut = () => {
+    dispatch(handleLogout());
+    <NavLink to="/" />;
+    onCloseUserPopup()
+  };
   return (
     <AppHeaderContainer>
-      <Typography>Welcome {loggedInUserData?.UserInfo?.username}</Typography>
+      <Typography>Welcome {userInfo?.username}</Typography>
       <Typography>College Management System</Typography>
-      <IconButton>
+      <IconButton onClick={onOpenUserPopup}>
         <Avatar
+          alt="User Profile"
+          src={userInfo?.profilePic}
           sx={{ width: 24, height: 24 }}
-          // className={classes.cms_avatarSize}
         />
       </IconButton>
+      <Popover
+        open={isUserDetailsPopupOpen}
+        onClose={onCloseUserPopup}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Stack alignItems="center">
+          <Avatar
+            alt="User Profile"
+            src={userInfo?.profilePic}
+            sx={{ width: 24, height: 24 }}
+          />
+
+          <Typography variant="button" color="#545454">
+            {userInfo?.username} : {userInfo?.rolename}
+          </Typography>
+          <Button onClick={handleSignOut}>Sign Out</Button>
+        </Stack>
+      </Popover>
     </AppHeaderContainer>
   );
 }
